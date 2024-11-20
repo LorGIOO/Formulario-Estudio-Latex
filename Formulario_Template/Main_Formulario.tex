@@ -1,0 +1,158 @@
+%Archivo Main
+
+\documentclass[a4paper,10pt]{report}
+
+% Paquetes esenciales
+\usepackage{graphicx}    % Inclusión de gráficos
+\usepackage{geometry}    % Configuración de márgenes
+\usepackage{fancyhdr}    % Encabezados y pies de página personalizados
+\usepackage{titlesec}    % Personalización de títulos
+\usepackage{fontspec}    % Selección de fuentes (compatible con XeLaTeX y LuaLaTeX)
+\usepackage{xcolor}      % Colores
+\usepackage{tabularx}    % Paquete para tablas flexibles
+\usepackage{tocloft}     % Personalización del índice
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{ragged2e}    % Para justificar el texto
+\usepackage{setspace}    % Para espaciar entre palabras y líneas
+\usepackage[colorlinks=true, linkcolor=black, pdfborder={0 0 0}]{hyperref} % Hipervínculos
+\usepackage{longtable}   % Tablas largas
+
+% Configuración de márgenes
+\geometry{left=1.3cm, right=1.3cm, top=2cm, bottom=1.3cm}
+
+% Configuración de la fuente del documento
+\setmainfont{Montserrat}
+
+% Definir color personalizado
+\definecolor{custompurple}{HTML}{5C068C}
+
+% Configuración de sangría global
+\setlength{\parindent}{0pt}
+
+% Ajuste de espaciado de línea
+\setstretch{1.25}
+
+% Establecer la profundidad del índice
+\setcounter{tocdepth}{3}
+
+\renewcommand{\contentsname}{Índice}
+\makeatletter
+\renewcommand{\tableofcontents}{
+	\begin{center}
+		{\Large\bfseries \contentsname} % Utiliza el nombre redefinido "Índice"
+	\end{center}
+	\vspace{-0.5cm} % Ajusta el espacio entre el título y el contenido del índice
+	\@starttoc{toc}
+}
+\makeatother
+
+% Estilo para títulos
+\titleformat{\section}[block]{\Large\bfseries\centering}{}{0pt}{}
+\titleformat{\subsection}[block]{\normalsize\normalfont}{}{0pt}{}  % Evitar negrita en subsecciones
+
+% Configuración del índice
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+% Definición de \sectionnc
+\newcommand{\sectionnc}[1]{%
+	\phantomsection
+	\section*{#1}
+	\addcontentsline{toc}{section}{#1}
+}
+
+% Definición de \subsectionnc
+\newcommand{\subsectionnc}[1]{%
+	\phantomsection
+	\addcontentsline{toc}{subsection}{#1}%
+	\makebox[0pt][l]{#1}% Mantiene el formato normal y alineado
+}
+
+% Definición del nuevo comando \formula sin negrita
+\newcommand{\formula}[3]{%
+	\phantomsection
+	\addcontentsline{toc}{subsection}{#1}%
+	\noindent
+	\begin{minipage}[t]{0.3\textwidth} 
+		\raggedright #1
+	\end{minipage}% 
+	\begin{minipage}[t]{0.4\textwidth} 
+		\centering #2
+	\end{minipage}% 
+	\begin{minipage}[t]{0.3\textwidth}
+		\raggedleft #3
+	\end{minipage}
+	
+	\bigskip
+}
+
+
+% Estilo de portada (logo)
+\fancypagestyle{titlepage}{
+	\fancyhf{}
+	\fancyhead[L]{\hspace{0cm}\raisebox{-0.3cm}{\includegraphics[width=9cm]{./999. recursos/Secciones/seccion-ingenieria-civil-original.png}}} % Ajusta la posición del logo de la portada
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+% Asegúrate de tener el paquete tabularx cargado
+\usepackage{tabularx}
+
+% Estilo del índice (utilizando el mismo estilo que las páginas principales)
+\fancypagestyle{indexpage}{
+	\fancyhf{}
+	\fancyhead[L]{\hspace{0cm}\raisebox{3cm}{\includegraphics[width=1.5cm]{./999. recursos/icono-ull-original.png}}} % Ajuste del logo en el índice
+	\fancyfoot[R]{\thepage} % Número de página alineado al margen derecho
+	\vspace{0.2cm} % Separación mínima entre logo y texto
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+% Estilo para el resto del documento (a partir de 'Tema n')
+\fancypagestyle{mainmatter}{
+	\fancyhf{}
+	\fancyhead[L]{\includegraphics[width=1.5cm]{./999. recursos/icono-ull-original.png}}
+	\fancyfoot[R]{\thepage}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+% Establecer el estilo de página por defecto
+\pagestyle{mainmatter}
+
+% Documento principal
+\begin{document}
+	
+	% Portada
+	\begin{titlepage}
+		\thispagestyle{titlepage}
+		\input{./0.1. portada/Portada.tex} % Ruta relativa para la portada
+	\end{titlepage}
+	
+	% Página en blanco sin numeración
+	\newpage
+	\thispagestyle{empty}
+	\mbox{}
+	
+	\newpage
+	% Índice con estilo personalizado
+	\pagenumbering{gobble} % Sin numeración visible
+	\begin{titlepage}
+		\thispagestyle{indexpage}
+		\input{./0.2. indice/Indice.tex} % Ruta relativa para el índice
+	\end{titlepage}
+	
+	% Nomenclatura
+	\newpage
+	\pagenumbering{arabic} % Comienza numeración arábiga
+	\input{./0.3. nomenclatura/Nomenclatura.tex} % Ruta relativa para la nomenclatura
+	
+	% Tema n
+	\newpage
+	\input{./1. Temas/Tema n.tex} % Ruta relativa para el tema
+	
+	\newpage
+	\input{./888. Descripciones/Descripción.tex} % Ruta relativa para el tema
+\end{document}
